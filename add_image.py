@@ -1,17 +1,19 @@
 # REFERENCE
 # https://stackoverflow.com/questions/2925484/place-image-over-pdf
 
-from PyPDF2 import PdfFileWriter, PdfFileReader, Transformation
+from PyPDF2 import PdfFileWriter, PdfFileReader
 from reportlab.pdfgen import canvas
+from msvcrt import getch
 
-imCoors_mm = [[113, 165], [113, 165], [260, 170], [107, 20], [107, 20], [107, 20], [107, 20], [107, 20], [107, 20]]
-imDims_mm = [[0, 0], [22, 27], [24, 29], [23, 27], [22, 27], [22, 27], [22, 27], [22, 27], [22, 27]]
+imCoors_mm = [[0, 0], [105, 162], [260, 169], [113, 168], [260, 169], [113, 168], [0, 0], [0, 0], [113, 168]]
+imDims_mm = [[0, 0], [24, 29], [24, 29], [24, 29], [24, 29], [24, 29], [0, 0], [0, 0], [24, 29]]
 
 def mm2pts(mm):
     return mm*2.83464567 
 
 
 def createWatermark(imgPath):
+    print("Preparing photo...")
     # Create the watermark from an image
     c = canvas.Canvas('temp_watermark.pdf')
     c.setPageSize((mm2pts(297), mm2pts(210)))
@@ -36,7 +38,7 @@ def addWatermark():
 
     # Go through all the input file pages to add a watermark to them
     for page_number in range(page_count):
-        print ("Watermarking page {} of {}".format(page_number, page_count))
+        print (f"Adding photo to page {page_number + 1} of {page_count}")
         # merge the watermark with the page
         input_page = input_file.getPage(page_number)
         input_page.mergePage(watermark.getPage(page_number))
@@ -48,5 +50,14 @@ def addWatermark():
         output_file.write(outputStream)
 
 if __name__ == "__main__":
-    createWatermark("photo.jpg")
-    addWatermark()
+    try:
+        createWatermark("photo.jpg")
+        addWatermark()
+        print("--> Photos successfully added!")
+        print("--> See 'document-output.pdf'")
+    except Exception as ex:
+        print("An error occured:")
+        print(ex)
+    finally:
+        print("Press any key to exit...")
+        getch()

@@ -1,4 +1,7 @@
 # staj_defteri_resim_koyucu
+
+THIS REPO IS NO LONGER BEING SUPPORTED/UPDATED SINCE IT IS UNNECESSARY.
+
  Add your photo automagically to the "staj defteri"
 
  # Setup
